@@ -1,6 +1,12 @@
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import random
+from pymongo import MongoClient
+from config import *
+
+mongo = MongoClient(MONGO_URL)
+db = mongo["anitoon_bot"]
+collection = db["settings"]
 
 from config import *
 
