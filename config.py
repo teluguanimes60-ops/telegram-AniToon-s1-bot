@@ -1,5 +1,5 @@
-API_ID = 1234567
-API_HASH = "your_real_api_hash_here"
+API_ID = 12345678
+API_HASH = "abcdef1234567890abcdef1234567890"
 BOT_TOKEN = "123456:ABCDEF-your-bot-token"
 
 OWNER_ID = 123456789
