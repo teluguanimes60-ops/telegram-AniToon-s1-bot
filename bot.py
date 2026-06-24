@@ -1,12 +1,6 @@
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import random
-from pymongo import MongoClient
-from config import *
-
-mongo = MongoClient(MONGO_URL)
-db = mongo["anitoon_bot"]
-collection = db["settings"]
 
 from config import *
 
@@ -18,13 +12,18 @@ app = Client(
 )
 
 # -------------------
-# MEMORY STORAGE
+# SETTINGS
 # -------------------
-reactions = {"👍": 50, "😂": 30, "❤️": 20}
 bot_status = True
 
+reactions = {
+    "👍": 50,
+    "😂": 30,
+    "❤️": 20
+}
+
 # -------------------
-# WEIGHTED REACTION
+# REACTION ENGINE
 # -------------------
 def get_reaction():
     items = list(reactions.items())
@@ -33,7 +32,7 @@ def get_reaction():
     return random.choices(emojis, weights=weights)[0]
 
 # -------------------
-# CONTROL PANEL
+# PANEL UI
 # -------------------
 def panel():
     return InlineKeyboardMarkup([
@@ -43,20 +42,21 @@ def panel():
     ])
 
 # -------------------
-# /START COMMAND
+# START COMMAND
 # -------------------
 @app.on_message(filters.command("start"))
 def start(client, message):
-    text = f"""
+    message.reply(
+        f"""
 🤖 AniToon’s ReactionX Bot
 
 👋 Hello {message.from_user.first_name}
 
-⚡ Auto Reaction Bot is ready
-🎯 Join Auto Accept: Active
-📊 Control Panel below
-"""
-    message.reply(text, reply_markup=panel())
+⚡ Auto Reaction System: ACTIVE
+📊 Control Panel Ready
+""",
+        reply_markup=panel()
+    )
 
 # -------------------
 # AUTO REACTIONS
@@ -74,7 +74,7 @@ def react(client, message):
         pass
 
 # -------------------
-# AUTO JOIN ACCEPT
+# JOIN REQUEST ACCEPT
 # -------------------
 @app.on_chat_join_request()
 def join_request(client, request):
@@ -86,24 +86,24 @@ def join_request(client, request):
 
         client.send_message(
             OWNER_ID,
-            f"✅ Join Approved:\nUser: {request.from_user.first_name}"
+            f"✅ Join Approved: {request.from_user.first_name}"
         )
     except:
         pass
 
 # -------------------
-# BUTTON CALLBACKS
+# BUTTON HANDLER
 # -------------------
 @app.on_callback_query()
 def callback(client, query):
     global bot_status
 
-    data = query.data
-
     try:
-        query.message.delete()  # remove old panel
+        query.message.delete()
     except:
         pass
+
+    data = query.data
 
     if data == "react":
         query.message.reply_text(
@@ -113,18 +113,18 @@ def callback(client, query):
 
     elif data == "toggle":
         bot_status = not bot_status
-        status = "ON" if bot_status else "OFF"
+        state = "ON" if bot_status else "OFF"
         query.message.reply_text(
-            f"⚙ Bot is {status}",
+            f"⚙ Bot is {state}",
             reply_markup=panel()
         )
 
     elif data == "status":
         query.message.reply_text(
             f"""
-📊 STATUS REPORT
+📊 BOT STATUS
 
-Bot: {bot_status}
+Status: {bot_status}
 Reactions: {reactions}
 """,
             reply_markup=panel()
