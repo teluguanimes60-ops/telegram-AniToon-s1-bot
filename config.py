@@ -1,6 +1,5 @@
-API_ID = 123456
-API_HASH = "YOUR_API_HASH"
-BOT_TOKEN = "YOUR_BOT_TOKEN"
+API_ID = 1234567
+API_HASH = "your_real_api_hash_here"
+BOT_TOKEN = "123456:ABCDEF-your-bot-token"
 
 OWNER_ID = 123456789
-MONGO_URL = "your_mongodb_connection_string"
