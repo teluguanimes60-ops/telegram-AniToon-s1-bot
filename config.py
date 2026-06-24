@@ -3,3 +3,4 @@ API_HASH = "YOUR_API_HASH"
 BOT_TOKEN = "YOUR_BOT_TOKEN"
 
 OWNER_ID = 123456789
+MONGO_URL = "your_mongodb_connection_string"
