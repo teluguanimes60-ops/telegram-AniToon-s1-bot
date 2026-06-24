@@ -1,5 +1,1 @@
-API_ID = 12345678
-API_HASH = "abcdef1234567890abcdef1234567890"
-BOT_TOKEN = "123456:ABCDEF-your-bot-token"
-
-OWNER_ID = 123456789
+from config import *
